@@ -1,0 +1,337 @@
+set nocompatible              " be iMproved, required
+filetype off                  " required
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+set mouse=a
+" alternatively, pass a path where Vundle should install plugins
+"call vundle#begin('~/some/path/here')
+" let Vundle manage Vundle, required
+Plugin 'VundleVim/Vundle.vim'
+Plugin 'NLKNguyen/pipe.vim' 
+Plugin 'NLKNguyen/pipe-mysql.vim'
+Plugin 'rafi/awesome-vim-colorschemes'
+Plugin 'flazz/vim-colorschemes'
+Plugin 'shmup/vim-sql-syntax'
+Plugin 'mattn/emmet-vim'
+Plugin 'SuperTab'
+Plugin 'dbext.vim'
+Plugin 'w0rp/ale'
+Plugin 'scrooloose/nerdtree'
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
+Plugin 'ryanoasis/vim-devicons'
+Plugin 'Valloric/YouCompleteMe'
+Plugin 'jiangmiao/auto-pairs'
+Plugin 'pangloss/vim-javascript'
+Plugin 'mxw/vim-jsx'
+Plugin 'evidens/vim-twig'
+Plugin 'leafgarland/typescript-vim'
+Plugin 'robu3/vimongous'
+Plugin 'posva/vim-vue'
+Plugin 'neoclide/coc-vetur'
+Plugin 'moll/vim-node'
+Plugin 'prettier/vim-prettier'
+Plugin 'chemzqm/vim-jsx-improve'
+Plugin 'gmoe/vim-eslint-syntax'
+Plugin 'tasn/vim-tsx'
+Plugin 'jwalton512/vim-blade'
+Plugin 'svg.vim'
+Plugin 'dracula/dracula-theme'
+Plugin 'dracula/vim', { 'name': 'dracula' }
+Plugin 'kristijanhusak/vim-js-file-import' , {'do':'npm install'}
+Plugin 'hermitmaster/nvim-monokai'
+Plugin 'ryanoasis/nerd-fonts'
+
+" The following are examples of different formats supported.
+" Keep Plugin commands between vundle#begin/end.
+" plugin on GitHub repo
+"Plugin 'tpope/vim-fugitive'
+" plugin from http://vim-scripts.org/vim/scripts.html
+" Plugin 'L9'
+" Git plugin not hosted on GitHub
+"Plugin 'git://git.wincent.com/command-t.git'
+" git repos on your local machine (i.e. when working on your own plugin)
+"Plugin 'file:///home/gmarik/path/to/plugin'
+" The sparkup vim script is in a subdirectory of this repo called vim.
+" Pass the path to set the runtimepath properly.
+"Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
+" Install L9 and avoid a Naming conflict if you've already installed a
+" different version somewhere else.
+" Plugin 'ascenator/L9', {'name': 'newL9'}
+
+" All of your Plugins must be added before the following line
+call vundle#end()            " required
+filetype plugin indent on    " required
+runtime macros/matchit.vim
+" To ignore plugin indent changes, instead use:
+"filetype plugin on
+"
+" Brief help
+" :PluginList       - lists configured plugins
+" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
+" :PluginSearch foo - searches for foo; append `!` to refresh local cache
+" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
+"
+" see :h vundle for more details or wiki for FAQ
+" Put your non-Plugin stuff after this line
+" All system-wide defaults are set in $VIMRUNTIME/debian.vim and sourced by
+" the call to :runtime you can find below.  If you wish to change any of those
+" settings, you should do it in this file (/etc/vim/vimrc), since debian.vim
+" will be overwritten everytime an upgrade of the vim packages is performed.
+" It is recommended to make changes after sourcing debian.vim since it alters
+" the value of the 'compatible' option.
+"let g:pipemysql_no_mappings = 0
+" This line should not be removed as it ensures that various options are
+" properly set to work with the Vim-related packages available in Debian.
+"runtime! debian.vim
+
+" Uncomment the next line to make Vim more Vi-compatible
+" NOTE: debian.vim sets 'nocompatible'.  Setting 'compatible' changes numerous
+" options, so any other options should be set AFTER setting 'compatible'.
+"set compatible
+
+" Vim5 and later versions support syntax highlighting. Uncommenting the next
+" line enables syntax highlighting by default.
+
+" If using a dark background within the editing area and syntax highlighting
+" turn on this option as well
+set background=dark
+set cursorline
+" Uncomment the following to have Vim jump to the last position when
+" reopening a file
+"if has("autocmd")
+"  au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+"endif
+
+" Uncomment the following to have Vim load indentation rules and plugins
+" according to the detected filetype.
+"if has("autocmd")
+"  filetype plugin indent on
+"endif
+set noswapfile
+
+set hlsearch
+" The following are commented out as they cause vim to behave a lot
+" differently from regular Vi. They are highly recommended though.
+"set showcmd		" Show (partial) command in status line.
+"set showmatch		" Show matching brackets.
+set ignorecase		" Do case insensitive matching
+"set smartcase		" Do smart case matching
+set incsearch		" Incremental search
+"set autowrite		" Automatically save before commands like :next and :make
+"set hidden		" Hide buffers when they are abandoned
+"set mouse=a		" Enable mouse usage (all modes)
+set number
+set tabstop=2
+set shiftwidth=2
+set showcmd
+set backspace=2
+set softtabstop=2
+set expandtab
+set autoindent
+autocmd FileType php set omnifunc=phpcomplete#CompletePHP
+" Source a global configuration file if available
+if filereadable("/etc/vim/vimrc.local")
+  source /etc/vim/vimrc.local
+endif
+syntax on
+let mapleader=","
+au BufNewFile,BufRead *.sql set filetype=mysql
+au BufNewFile,BufRead *.sql set filetype=sql
+let g:dbext_default_MYSQL_extra = '--batch --raw'
+let g:dbext_default_profile_mysql_local = 'type=MYSQL:user=root:passwd=test:dbname=test:extra=--batch --raw --silent'
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+autocmd BufWinEnter * if getcmdwintype() == '' | silent NERDTreeMirror | endif
+nnoremap <leader>' :NERDTreeToggle<cr>
+nnoremap <leader>; :NERDTreeFocus<cr>
+let g:airline_powerline_fonts = 1
+let g:airline_theme='ouo'
+set encoding=UTF-8
+let g:AutoPairsFlyMode = 1
+let g:airline#extensions#tabline#formatter = 'default'
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#left_sep = ' '
+let g:airline#extensions#tabline#left_alt_sep = '|'
+let g:AutoPairsShortcutBackInsert = '<C-b>'
+let g:javascript_plugin_jsdoc = 1
+let g:javascript_plugin_ngdoc = 1
+let g:javascript_plugin_flow = 1
+"augroup javascript_folding
+"    au!
+"    au FileType javascript setlocal foldmethod=syntax
+"augroup END
+"set filetype=htmljinja
+
+" In ~/.vim/ftplugin/javascript.vim, or somewhere similar.
+
+" Fix files with prettier, and then ESLint.
+let b:ale_fixers = ['prettier', 'eslint']
+" Equivalent to the above.
+let b:ale_fixers = {'javascript': ['prettier', 'eslint']}
+
+let g:ale_sign_error = '>>'
+let g:ale_sign_warning = '--'
+
+"webdevicon
+set rtp+=$HOME/.local/lib/python2.7/site-packages/powerline/bindings/vim/
+
+" Always show statusline
+set laststatus=2
+
+" Use 256 colours (Use this setting only if your terminal supports 256 colours)
+set t_Co=256
+
+let g:lightline = {
+      \ 'component_function': {
+      \   'filetype': 'MyFiletype',
+      \   'fileformat': 'MyFileformat',
+      \ }
+      \ }
+
+function! MyFiletype()
+  return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype . ' ' . WebDevIconsGetFileTypeSymbol() : 'no ft') : ''
+endfunction
+
+function! MyFileformat()
+  return winwidth(0) > 70 ? (&fileformat . ' ' . WebDevIconsGetFileFormatSymbol()) : ''
+endfunction
+
+let g:WebDevIconsUnicodeDecorateFileNodesDefaultSymbol = 'ƛ'
+let g:WebDevIconsUnicodeDecorateFolderNodes = 1
+let g:DevIconsEnableFoldersOpenClose = 1
+let g:DevIconsEnableFolderPatternMatching = 1
+let g:WebDevIconsUnicodeDecorateFolderNodeDefaultSymbol = 'ƛ'
+let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols = {} " needed
+let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['js'] = 'ƛ'
+let g:WebDevIconsUnicodeDecorateFileNodesExactSymbols = {} " needed
+let g:WebDevIconsUnicodeDecorateFileNodesExactSymbols['MyReallyCoolFile.okay'] = 'ƛ'
+let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols = {} " needed
+let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['myext'] = 'ƛ'
+" NERDTress File highlighting
+function! NERDTreeHighlightFile(extension, fg, bg, guifg, guibg)
+ exec 'autocmd FileType nerdtree highlight ' . a:extension .' ctermbg='. a:bg .' ctermfg='. a:fg .' guibg='. a:guibg .' guifg='. a:guifg
+ exec 'autocmd FileType nerdtree syn match ' . a:extension .' #^\s\+.*'. a:extension .'$#'
+endfunction
+
+call NERDTreeHighlightFile('jade', 'green', 'none', 'green', '#151515')
+call NERDTreeHighlightFile('ini', 'yellow', 'none', 'yellow', '#151515')
+call NERDTreeHighlightFile('md', 'blue', 'none', '#3366FF', '#151515')
+call NERDTreeHighlightFile('yml', 'yellow', 'none', 'yellow', '#151515')
+call NERDTreeHighlightFile('config', 'yellow', 'none', 'yellow', '#151515')
+call NERDTreeHighlightFile('conf', 'yellow', 'none', 'yellow', '#151515')
+call NERDTreeHighlightFile('json', 'yellow', 'none', 'yellow', '#151515')
+call NERDTreeHighlightFile('html', 'yellow', 'none', 'yellow', '#151515')
+call NERDTreeHighlightFile('styl', 'cyan', 'none', 'cyan', '#151515')
+call NERDTreeHighlightFile('css', 'cyan', 'none', 'cyan', '#151515')
+call NERDTreeHighlightFile('coffee', 'Red', 'none', 'red', '#151515')
+call NERDTreeHighlightFile('js', 'Red', 'none', '#ffa500', '#151515')
+call NERDTreeHighlightFile('php', 'Magenta', 'none', '#ff00ff', '#151515')
+call NERDTreeHighlightFile('ds_store', 'Gray', 'none', '#686868', '#151515')
+call NERDTreeHighlightFile('gitconfig', 'Gray', 'none', '#686868', '#151515')
+call NERDTreeHighlightFile('gitignore', 'Gray', 'none', '#686868', '#151515')
+call NERDTreeHighlightFile('bashrc', 'Gray', 'none', '#686868', '#151515')
+call NERDTreeHighlightFile('bashprofile', 'Gray', 'none', '#686868', '#151515')
+
+if exists("g:loaded_webdevicons")
+	call webdevicons#refresh()
+endif
+
+let g:typescript_indent_disable = 1
+setlocal indentkeys+=0
+let g:typescript_opfirst='\%([<>=,?^%|*/&]\|\([-:+]\)\1\@!\|!=\|in\%(stanceof\)\=\>\)'
+let g:typescript_compiler_binary = 'tsc'
+let g:typescript_compiler_options = ''
+autocmd FileType typescript :set makeprg=tsc
+autocmd QuickFixCmdPost [^l]* nested cwindow
+autocmd QuickFixCmdPost    l* nested lwindow
+
+autocmd User Node if &filetype == "javascript" | setlocal expandtab | endif
+autocmd User Node
+  \ if &filetype == "javascript" |
+  \   nmap <buffer> <C-w>f <Plug>NodeVSplitGotoFile |
+  \   nmap <buffer> <C-w><C-f> <Plug>NodeVSplitGotoFile |
+  \ endif
+
+let g:jsx_ext_required = 1
+let g:jsx_pragma_required = 1
+
+noremap <leader>l  :make % <cr>:cwindow<cr>:redraw!<cr>
+
+" lint and fix current file
+noremap <leader>lf :make --fix % <cr>:cwindow<cr>:redraw!<cr>
+
+noremap <Leader>e :call ESLintFileExternal()<cr>
+
+function! ESLintFileExternal()
+  if (&ft=='javascript' || &ft=='javascript.jsx' || &ft=='javascriptreact')
+    let linterBuffType = 'eslint'
+
+    " Recursively find local eslint, otherwise use global binary
+    let localESLint = findfile('node_modules/.bin/eslint', '.;')
+    if (!empty(localESLint))
+      let linter = system(localESLint . " " . bufname("%") . " 2>&1")
+    else
+      let linter = system("eslint " . bufname("%") . " 2>&1")
+    endif
+  elseif (&ft=='myfile')
+    " Add other linters! Maybe write highlighters for them?
+  endif
+  if (exists('linter'))
+    split __Linter_Results__
+    normal! ggdG
+    setlocal buftype=nofile
+    setlocal bufhidden=delete
+    let &filetype = linterBuffType
+    call append(0, split(linter, '\v\n'))
+  else
+    echo "File type not supported by available linters"
+  endif
+endfunction
+
+" Define some single Blade directives. This variable is used for highlighting only.
+let g:blade_custom_directives = ['datetime', 'javascript']
+
+" Define pairs of Blade directives. This variable is used for highlighting and indentation.
+let g:blade_custom_directives_pairs = {
+      \   'markdown': 'endmarkdown',
+      \   'cache': 'endcache',
+      \ }
+
+let g:user_emmet_settings = {
+\  'variables': {'lang': 'ja'},
+\  'html': {
+\    'default_attributes': {
+\      'option': {'value': v:null},
+\      'textarea': {'id': v:null, 'name': v:null, 'cols': 10, 'rows': 10},
+\    },
+\    'snippets': {
+\      'vue': "<template>\n"
+\              ."\n"
+\              ."</template>"
+\              ."\n"
+\              ."<script>\n"
+\              ."export default {\n"
+\              ."\t data(){\n"
+\              ."\t \t return{ \n"
+\              ."\n"
+\              ."\t \t}\n"
+\              ."\t }\n"
+\              ."}\n"
+\              ."</script>"
+\    },
+\  },
+\}
+
+
+colorscheme minimalist
+
+highlight Directory ctermfg=cyan
+let g:NERDTreeFileExtensionHighlightFullName = 1
+"set termguicolors
+"highlight Normal ctermbg=NONE
+"set cindent
